@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0     # Or whichever version of MySQL you're using
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ecommerce     # (Optional) Database to create
+      MYSQL_USER: admin             # (Optional) Custom user to create
+      MYSQL_PASSWORD: admin     # (Optional) Password for the custom user
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data:/var/lib/mysql        # (Optional) Persistent volume for MySQL data
+      - ./init-scripts:/docker-entrypoint-initdb.d # Directory containing your ini.sql script
+    networks:
+      - ecommerce-net
+
+networks:
+  ecommerce-net:
+    external: true                                 # Custom network to connect MySQL and Spring Boot app
